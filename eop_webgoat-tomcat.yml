@@ -1,0 +1,16 @@
+---
+- name: Install deps
+  apt: name={{ item }} update_cache=yes state=present
+  with_items:
+  - mysql-client
+  - libaio1
+  - python-mysqldb
+  - tomcat7
+  - openjdk-7-jdk
+
+- name: Download WebGoat
+  get_url:
+    url: https://github.com/WebGoat/WebGoat/releases/download/7.1/webgoat-container-7.1.war
+    dest: /var/lib/tomcat7/webapps/WebGoat.war
+    owner: tomcat7
+    group: tomcat7

@@ -1,0 +1,20 @@
+---
+- name: Install deps
+  apt: name={{ item }} update_cache=yes state=present
+  with_items:
+  - mysql-client
+  - libaio1
+  - python-mysqldb
+  - openjdk-7-jdk
+
+- name: Make directory for WebGoat
+  file: path=/opt/webgoat mode=0755 state=directory
+
+- name: Download WebGoat
+  get_url:
+    url: https://github.com/WebGoat/WebGoat/releases/download/7.1/webgoat-container-7.1-exec.jar
+    dest: /opt/webgoat/
+    mode: 0755
+
+- name: Start WebGoat
+  command: nohup java -jar /opt/webgoat/webgoat-container-7.1-exec.jar &

@@ -1,0 +1,2 @@
+licenseMethod=0
+licenseFileLocation=/opt/contrast.lic

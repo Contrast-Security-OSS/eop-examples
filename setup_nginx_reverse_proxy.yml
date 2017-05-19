@@ -1,0 +1,23 @@
+- debug: msg="This work is not yet complete"
+
+# - name: Install nginx
+#   apt: name={{ item }} update_cache=yes state=present
+#   with_items:
+#     - nginx
+#
+# - name: enable apache mods
+#   apache2_module: name={{ item }} state=present
+#   with_items:
+#     - proxy
+#     - proxy_http
+#     - ssl
+#   notify: restart apache
+#
+# - name: make directory for ssl certs
+#   file: path=/etc/apache2/ssl
+#
+# - name: generate private key
+#
+# - name: generate csr
+#
+# - name: generate 509X cert
