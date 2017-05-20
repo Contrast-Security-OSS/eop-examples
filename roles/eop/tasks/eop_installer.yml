@@ -1,0 +1,37 @@
+- debug: msg="Running eop_installer.yml" verbosity=1
+
+- name: Install Dependencies (Ubuntu)
+  apt: name={{ item }} update_cache=yes state=present cache_valid_time=600
+  with_items:
+  - mysql-client
+  - libaio1
+  - python-mysqldb
+  when: ansible_os_family == "Debian"
+
+- name: Install Dependencies (RedHat)
+  yum: name={{ item }} update_cache=yes state=present
+  with_items:
+    - mysql
+    - libaio
+    - libselinux-python
+  when: ansible_os_family == "RedHat"
+
+- name: Download from S3
+  get_url: url={{ contrast_installer_s3 }} dest=/opt/contrast-installer-{{ eop_version }}.sh mode=0655 backup=yes
+  when: contrast_installer_s3 is defined and contrast_installer_s3 != False
+
+- name: Copy to host
+  copy: src={{ contrast_installer_local }}  dest=/opt/contrast-installer-{{ eop_version }}.sh mode=0655 backup=yes
+  when: contrast_installer_local is defined
+
+- name: Copy license file
+  copy: src={{ contrast_license }} dest=/opt/contrast.lic backup=yes
+  when: contrast_license is defined
+
+- name: Copy varsfile
+  copy: src=vars.txt dest=/opt/vars.txt
+
+- name: Run the installer
+  command: sh /opt/contrast-installer-{{ eop_version }}.sh -q -varfile /opt/vars.txt creates=/opt/contrast/VERSION
+  become: True
+  when: run_install

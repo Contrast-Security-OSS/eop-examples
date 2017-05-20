@@ -1,0 +1,11 @@
+---
+# defaults file for eop
+contrast_license: ~/Downloads/contrast-12-31-2017.lic
+contrast_installer_local: "~/Downloads/Contrast-3.3.8.506.sh"
+eop_version: 3.3.8
+run_install: True
+webgoat: False
+apache_reverse: True
+nginx_reverse: False
+do_ssl: True
+ssl_dir: /opt/ssl

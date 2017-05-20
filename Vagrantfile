@@ -7,9 +7,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
         vagrant1.vm.box = "ubuntu/trusty64"
         vagrant1.vm.hostname = "eop-ubuntu1404.local"
-        vagrant1.vm.network "forwarded_port", guest: 8080, host: 8091
-        vagrant1.vm.network "forwarded_port", guest: 443, host: 8096
-        vagrant1.vm.network "forwarded_port", guest: 80, host: 8097
+        vagrant1.vm.network "forwarded_port", guest: 8080, host: 8180
+        vagrant1.vm.network "forwarded_port", guest: 443, host: 8143
         vagrant1.vm.network "private_network", ip: "10.1.1.11"
         vagrant1.vm.provision "ansible" do |ansible1|
             ansible1.verbose = 'v'
@@ -23,7 +22,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
         vagrant2.vm.box = "ubuntu/xenial64"
         vagrant2.vm.hostname = "eop-ubuntu1604.local"
-        vagrant2.vm.network "forwarded_port", guest: 8080, host: 8092
+        vagrant2.vm.network "forwarded_port", guest: 8080, host: 8280
+        vagrant2.vm.network "forwarded_port", guest: 443, host: 8243
         vagrant2.vm.network "private_network", ip: "10.1.1.21"
         vagrant2.vm.provision "ansible" do |ansible2|
             ansible2.verbose = 'v'
@@ -37,7 +37,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
         vagrant3.vm.box = "centos/7"
         vagrant3.vm.hostname = "eop-centos7.local"
-        vagrant3.vm.network "forwarded_port", guest: 8080, host: 8093
+        vagrant3.vm.network "forwarded_port", guest: 8080, host: 8380
+        vagrant3.vm.network "forwarded_port", guest: 443, host: 8343
         vagrant3.vm.network "private_network", ip: "10.1.1.31"
         vagrant3.vm.provision "ansible" do |ansible3|
             ansible3.verbose = 'v'
@@ -51,7 +52,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
         vagrant4.vm.box = "centos/6"
         vagrant4.vm.hostname = "eop-centos6.local"
-        vagrant4.vm.network "forwarded_port", guest: 8080, host: 8094
+        vagrant4.vm.network "forwarded_port", guest: 8080, host: 8480
+        vagrant4.vm.network "forwarded_port", guest: 443, host: 8443
         vagrant4.vm.network "private_network", ip: "10.1.1.41"
         vagrant4.vm.provision "ansible" do |ansible4|
             ansible4.verbose = 'v'

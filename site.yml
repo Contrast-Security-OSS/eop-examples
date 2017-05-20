@@ -1,32 +1,6 @@
 ---
 - hosts: eop
-  sudo: True
+  become: True
   gather_facts: True
-  vars:
-    contrast_license: ~/Downloads/contrast-12-31-2017.lic
-    #contrast_installer_local: "~/Downloads/Contrast-3.3.6.426.sh"
-    contrast_installer_local: "~/Downloads/Contrast-3.3.8.506.sh"
-    eop_version: 3.3.8
-    run_install: True
-    webgoat: False
-    apache_reverse: True
-    nginx_reverse: False
-  tasks:
-
-    - include: eop_debian.yml
-      when: ansible_os_family == "Debian" and eop_version is defined
-
-    - include: setup_apache_reverse_proxy.yml
-      when: ansible_os_family == "Debian" and apache_reverse == True
-
-    # - include: setup_nginx_reverse_proxy.yml
-    #   when: ansible_hostname == "eop-ubuntu1404" and nginx_reverse == True
-    #
-    # - include: eop_rhel.yml
-    #   when: ansible_os_family == "RedHat" and eop_version is defined
-    #
-    # - include: eop_webgoat-standalone.yml
-    #   when: ansible_hostname == "eop-webgoat-standalone"
-    #
-    # - include: eop_webgoat-tomcat.yml
-    #   when: ansible_hostname == "eop-webgoat-tomcat"
+  roles:
+    - eop

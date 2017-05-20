@@ -1,0 +1,11 @@
+---
+# handlers file for eop
+- name: restart apache
+  service: state=restarted name={{ item }}
+  with_items:
+    - apache2
+    - httpd
+  ignore_errors: true
+  
+- name: restart contrast
+  service: state=restarted name=contrast-server

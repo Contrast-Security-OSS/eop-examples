@@ -1,0 +1,55 @@
+- name: Assert that both do_ssl is True
+  assert:
+    that:
+      - do_ssl
+    msg: "Variable do_ssl must be true"
+
+- name: Assert that both only apache_reverse or nginx_reverse are true
+  assert:
+    that:
+      - not (apache_reverse and nginx_reverse)
+    msg: "Both apache_reverse and nginx_reverse cannot be True"
+
+- set_fact:
+    apache_config_dir: apache2
+  when: ansible_os_family == "Debian"
+
+- set_fact:
+    apache_config_dir: httpd
+  when: ansible_os_family == "RedHat"
+
+- name: Install Apache
+  apt: name={{ item }} update_cache=yes state=present
+  with_items:
+    - apache2
+  when: ansible_os_family == "Debian"
+
+- name: Install Apache
+  yum: name={{ item }} update_cache=yes state=present
+  with_items:
+    - httpd
+    - mod_ssl
+  when: ansible_os_family == "RedHat"
+
+- name: enable apache mods
+  apache2_module: name={{ item }} state=present
+  with_items:
+    - proxy
+    - proxy_http
+    - ssl
+
+- name: Copy Apache2 SSL Template
+  template: src=contrast-eop-demo.conf dest=/etc/{{ apache_config_dir }}/conf.d/
+  when: ansible_os_family == "RedHat"
+  notify: restart apache
+
+- name: Allow httpd_can_network_connect between Apache on Tomcat for SELinux
+  command: setsebool -P httpd_can_network_connect 1
+  become: True
+  when: ansible_os_family == "RedHat"
+
+- name: Enable new Site
+  command: a2ensite contrast-eop-demo
+  become: True
+  when: ansible_os_family == "Debian"
+  notify: restart apache

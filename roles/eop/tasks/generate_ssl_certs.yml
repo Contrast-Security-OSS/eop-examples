@@ -1,0 +1,54 @@
+- set_fact:
+    use_openssl_module: "{{ ansible_version.string | version_compare('2.3', '>=') }}"
+
+- name: make directory for ssl certs
+  file: path={{ ssl_dir }} state=directory
+
+- name: generate private key
+  command: openssl genrsa -out {{ ssl_dir }}/{{ ansible_hostname }}.key 2048 \
+                          creates={{ ssl_dir }}/{{ ansible_hostname }}.key
+  when: not use_openssl_module
+
+- name: generate csr
+  command: openssl req -nodes \
+                       -new \
+                       -subj "/C=US/O=ContrastEOP/CN={{ ansible_hostname }}"
+                       -key {{ ssl_dir }}/{{ ansible_hostname }}.key \
+                       -out {{ ssl_dir }}/{{ ansible_hostname }}.csr \
+                       creates={{ ssl_dir }}/{{ ansible_hostname }}.csr
+  when: not use_openssl_module
+
+- name: generate 509X cert
+  command: openssl x509 -req \
+                        -days 365 \
+                        -in {{ ssl_dir }}/{{ ansible_hostname }}.csr \
+                        -signkey {{ ssl_dir }}/{{ ansible_hostname }}.key \
+                        -out {{ ssl_dir }}/{{ ansible_hostname }}.crt \
+                        creates={{ ssl_dir }}/{{ ansible_hostname }}.crt
+
+  when: not use_openssl_module
+
+# New Modules Introduced in Ansible 2.3
+# Couldn't get modules below to run when Ansible 2.2
+# TODO: Fix Later
+# - name: generate private key
+#   openssl_privatekey:
+#     path: "{{ ssl_dir}}/{{ ansible_hostname }}.pem"
+#   when: use_openssl_module
+#
+# - name: generate csr
+#   openssl_csr:
+#     path: /etc/apache2/ssl/{{ ansible_hostname }}.csr
+#     privatekey_path: "{{ ssl_dir}}/{{ ansible_hostname }}.pem"
+#     countryName: US
+#     organizationName: ContrastEOP
+#     emailAddress: support@contrastsecurity.com
+#     commonName: "{{ ansible_hostname }}"
+#   when: use_openssl_module
+#
+# - name: generate 509X cert
+#   openssl_publickey:
+#     path: "{{ ssl_dir }}/{{ ansible_hostname }}.crt"
+#     privatekey_path: "{{ ssl_dir }}/{{ ansible_hostname }}.pem"
+#   when: use_openssl_module
+# End use of new modules
