@@ -69,5 +69,8 @@
 - name: Copy Apache2 SSL Template
   template: src=contrast-eop-demo.conf dest=/etc/apache2/sites-available/
 
+- name: Enable new Site
+  command: sudo a2ensite contrast-eop-demo
+
 - name: restart apache
   service: state=restarted name=apache2

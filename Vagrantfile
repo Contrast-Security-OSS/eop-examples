@@ -8,7 +8,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vagrant1.vm.box = "ubuntu/trusty64"
         vagrant1.vm.hostname = "eop-ubuntu1404.local"
         vagrant1.vm.network "forwarded_port", guest: 8080, host: 8091
-        vagrant1.vm.network "forwarded_port", guest: 80, host: 8096
+        vagrant1.vm.network "forwarded_port", guest: 443, host: 8096
+        vagrant1.vm.network "forwarded_port", guest: 80, host: 8097
         vagrant1.vm.network "private_network", ip: "10.1.1.11"
         vagrant1.vm.provision "ansible" do |ansible1|
             ansible1.verbose = 'v'
