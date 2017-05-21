@@ -38,7 +38,7 @@
     - proxy_http
     - ssl
 
-- name: Copy Apache2 SSL Template
+- name: Copy Apache2 SSL VirtualHost Template
   template: src=contrast-eop-demo.conf dest=/etc/{{ apache_config_dir }}/conf.d/
   when: ansible_os_family == "RedHat"
   notify: restart apache
@@ -47,6 +47,11 @@
   command: setsebool -P httpd_can_network_connect 1
   become: True
   when: ansible_os_family == "RedHat"
+
+- name: Copy Apache2 SSL VirtualHost Template
+  template: src=contrast-eop-demo.conf dest=/etc/{{ apache_config_dir }}/sites-available/
+  when: ansible_os_family == "Debian"
+  notify: restart apache
 
 - name: Enable new Site
   command: a2ensite contrast-eop-demo
