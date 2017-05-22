@@ -3,9 +3,9 @@ server {
 
   root /var/www/;
 
-  server_name eop-ubuntu1404;
-  ssl_certificate /opt/ssl/eop-ubuntu1404.crt;
-  ssl_certificate_key /opt/ssl/eop-ubuntu1404.key;
+  server_name {{ ansible_hostname }};
+  ssl_certificate /opt/ssl/{{ ansible_hostname }}.crt;
+  ssl_certificate_key /opt/ssl/{{ ansible_hostname }}.key;
 
   location / {
     proxy_set_header    Host $http_host;
