@@ -6,6 +6,11 @@
     - apache2
     - httpd
   ignore_errors: true
-  
+
+- name: restart nginx
+  service: state=restarted name={{ item }}
+  with_items:
+    - nginx
+
 - name: restart contrast
   service: state=restarted name=contrast-server

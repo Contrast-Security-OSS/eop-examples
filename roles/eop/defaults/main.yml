@@ -5,7 +5,7 @@ contrast_installer_local: "~/Downloads/Contrast-3.3.8.506.sh"
 eop_version: 3.3.8
 run_install: True
 webgoat: False
-apache_reverse: True
-nginx_reverse: False
+apache_reverse: False
+nginx_reverse: True
 do_ssl: True
 ssl_dir: /opt/ssl

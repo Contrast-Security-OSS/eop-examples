@@ -1,5 +1,11 @@
 ---
 # tasks file for eop
+- name: Assert that both only apache_reverse or nginx_reverse are true
+  assert:
+    that:
+      - not (apache_reverse and nginx_reverse)
+    msg: "Both apache_reverse and nginx_reverse cannot be True"
+
 - include: eop_installer.yml
   when: eop_version is defined
 
@@ -9,9 +15,9 @@
 - include: setup_apache_reverse_proxy.yml
   when: apache_reverse == True
 
-# - include: setup_nginx_reverse_proxy.yml
-#   when: ansible_hostname == "eop-ubuntu1404" and nginx_reverse == True
-#
+- include: setup_nginx_reverse_proxy.yml
+  when: nginx_reverse == True
+
 # - include: eop_rhel.yml
 #   when: ansible_os_family == "RedHat" and eop_version is defined
 #

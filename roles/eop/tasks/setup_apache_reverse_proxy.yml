@@ -4,12 +4,6 @@
       - do_ssl
     msg: "Variable do_ssl must be true"
 
-- name: Assert that both only apache_reverse or nginx_reverse are true
-  assert:
-    that:
-      - not (apache_reverse and nginx_reverse)
-    msg: "Both apache_reverse and nginx_reverse cannot be True"
-
 - set_fact:
     apache_config_dir: apache2
   when: ansible_os_family == "Debian"
@@ -19,7 +13,7 @@
   when: ansible_os_family == "RedHat"
 
 - name: Install Apache
-  apt: name={{ item }} update_cache=yes state=present
+  apt: name={{ item }} update_cache=yes state=present cache_valid_time=600
   with_items:
     - apache2
   when: ansible_os_family == "Debian"
@@ -39,7 +33,7 @@
     - ssl
 
 - name: Copy Apache2 SSL VirtualHost Template
-  template: src=contrast-eop-demo.conf dest=/etc/{{ apache_config_dir }}/conf.d/
+  template: src=contrast-apache-demo.conf.j2 dest=/etc/{{ apache_config_dir }}/conf.d/contrast-eop-demo.conf
   when: ansible_os_family == "RedHat"
   notify: restart apache
 
@@ -49,7 +43,7 @@
   when: ansible_os_family == "RedHat"
 
 - name: Copy Apache2 SSL VirtualHost Template
-  template: src=contrast-eop-demo.conf dest=/etc/{{ apache_config_dir }}/sites-available/
+  template: src=contrast-apache-demo.conf.j2 dest=/etc/{{ apache_config_dir }}/sites-available/contrast-eop-demo.conf
   when: ansible_os_family == "Debian"
   notify: restart apache
 
