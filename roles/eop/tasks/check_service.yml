@@ -1,0 +1,10 @@
+
+- name: Copy check-service script
+  template: src=check-service.sh dest=/opt/check-service-{{ check_scheme }}-{{ check_port }}.sh mode=0755
+
+- name: Wait for service to be available
+  shell: /opt/check-service-{{ check_scheme }}-{{ check_port }}.sh
+  register: result
+  until: result.stdout.find("TEAMSERVER UP") != -1
+  retries: 10
+  delay: 30

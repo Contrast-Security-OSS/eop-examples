@@ -52,3 +52,11 @@
   become: True
   when: ansible_os_family == "Debian"
   notify: restart apache
+
+- name: Set check_port and check_scheme
+  set_fact:
+    check_port: 443
+    check_scheme: https
+
+- name: Check the service
+  include: check_service.yml

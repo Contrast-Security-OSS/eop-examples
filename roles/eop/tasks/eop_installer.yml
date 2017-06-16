@@ -36,12 +36,10 @@
   become: True
   when: run_install
 
-- name: Copy check-service script
-  template: src=check-service.sh dest=/opt/check-service.sh mode=0755
+- name: Set check_port and check_scheme
+  set_fact:
+    check_port: 8080
+    check_scheme: http
 
-- name: Wait for service to be available
-  shell: /opt/check-service.sh
-  register: result
-  until: result.stdout.find("TEAMSERVER UP") != -1
-  retries: 10
-  delay: 30
+- name: Check the service
+  include: check_service.yml

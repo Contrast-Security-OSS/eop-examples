@@ -5,6 +5,6 @@ eop_version: 3.4.0
 run_install: True
 webgoat: False
 apache_reverse: False
-nginx_reverse: False
-do_ssl: False
+nginx_reverse: True
+do_ssl: True
 ssl_dir: /opt/ssl
