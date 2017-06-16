@@ -1,38 +1,58 @@
-Role Name
+eop
 =========
 
-A brief description of the role goes here.
+A role to install Contrast Security TeamServer on different Operating Systems with built in SSL examples and setup.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Use the following variables to configure the paths to you artifacts and whether or not you want automated installation.
+
+```
+contrast_license: ~/Downloads/contrast.lic
+contrast_installer_local: "~/Downloads/Contrast-3.4.0.517.sh"
+contrast_installer_s3: False
+eop_version: 3.4.0
+run_install: True
+```
+
+You cannot set `apache_reverse` and `nginx_reverse` to True at the same time.  Also, if either `*_reverse` vars are `True`, `do_ssl` must also be `True`.
+```
+apache_reverse: False
+nginx_reverse: False
+do_ssl: False
+ssl_dir: /opt/ssl
+```
+
+If you would like to download and run WebGoat, set this to `True`.
+```
+webgoat: False
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This can also be seen in the root directory site.yml.
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: eop, webgoat: True }
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+David Hafley

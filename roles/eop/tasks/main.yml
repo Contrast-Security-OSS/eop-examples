@@ -18,11 +18,5 @@
 - include: setup_nginx_reverse_proxy.yml
   when: nginx_reverse == True
 
-# - include: eop_rhel.yml
-#   when: ansible_os_family == "RedHat" and eop_version is defined
-#
-# - include: eop_webgoat-standalone.yml
-#   when: ansible_hostname == "eop-webgoat-standalone"
-#
-# - include: eop_webgoat-tomcat.yml
-#   when: ansible_hostname == "eop-webgoat-tomcat"
+- include: eop_webgoat-standalone.yml
+  when: webgoat == True
