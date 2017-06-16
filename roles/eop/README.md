@@ -42,7 +42,8 @@ None
 Example Playbook
 ----------------
 
-This can also be seen in the root directory site.yml.
+This role is embedded directly into a playbook project within this repot.  
+More info can be found in `site.yml` and the repo `README`.
 
     - hosts: servers
       roles:
