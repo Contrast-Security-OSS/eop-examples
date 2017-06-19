@@ -8,13 +8,13 @@ An Ansible playbook to install Contrast Security TeamServer on different Operati
 Installation will depend on your host operating system.
 
 On a Mac, all dependencies can be installed using homebrew
-* ansible 2.2.1
+* Ansible 2.2.1
 * vagrant
 * VirtualBox
 
 This project expects an installer and license that have been downloaded from [Contrast Hub](https://hub.contrastsecurity.com).  
 
-Optionally, this can download an artifact from S3.
+Optionally, this can download an installer artifact from S3.
 
 
 ## Variables
