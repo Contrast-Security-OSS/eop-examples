@@ -1,0 +1,11 @@
+<VirtualHost *:443>
+        ServerAdmin support@contrastsecurity.com
+        SSLEngine On
+        SSLCertificateFile {{ ssl_dir }}/{{ ansible_hostname }}.crt
+        SSLCertificateKeyFile {{ ssl_dir }}/{{ ansible_hostname }}.key
+        ProxyPreserveHost Off
+        ProxyPass / http://localhost:8080/
+        ProxyPassReverse / http://localhost:8080/
+        ProxyPassReverse / http://%{SERVER_NAME}:8080/
+        ServerName {{ ansible_hostname }}
+</VirtualHost>

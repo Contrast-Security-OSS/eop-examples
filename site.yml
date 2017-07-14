@@ -1,0 +1,6 @@
+---
+- hosts: eop
+  become: True
+  gather_facts: True
+  roles:
+    - eop

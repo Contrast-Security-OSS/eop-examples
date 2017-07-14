@@ -1,0 +1,62 @@
+- name: Assert that both do_ssl is True
+  assert:
+    that:
+      - do_ssl
+    msg: "Variable do_ssl must be true"
+
+- set_fact:
+    apache_config_dir: apache2
+  when: ansible_os_family == "Debian"
+
+- set_fact:
+    apache_config_dir: httpd
+  when: ansible_os_family == "RedHat"
+
+- name: Install Apache
+  apt: name={{ item }} update_cache=yes state=present cache_valid_time=600
+  with_items:
+    - apache2
+  when: ansible_os_family == "Debian"
+
+- name: Install Apache
+  yum: name={{ item }} update_cache=yes state=present
+  with_items:
+    - httpd
+    - mod_ssl
+  when: ansible_os_family == "RedHat"
+
+- name: enable apache mods
+  apache2_module: name={{ item }} state=present
+  with_items:
+    - proxy
+    - proxy_http
+    - ssl
+
+- name: Copy Apache2 SSL VirtualHost Template
+  template: src=contrast-apache-demo.conf.j2 dest=/etc/{{ apache_config_dir }}/conf.d/contrast-eop-demo.conf
+  when: ansible_os_family == "RedHat"
+  notify: restart apache
+
+- name: Allow httpd_can_network_connect between Apache on Tomcat for SELinux
+  command: setsebool -P httpd_can_network_connect 1
+  become: True
+  when: ansible_os_family == "RedHat"
+
+- name: Copy Apache2 SSL VirtualHost Template
+  template: src=contrast-apache-demo.conf.j2 dest=/etc/{{ apache_config_dir }}/sites-available/contrast-eop-demo.conf
+  when: ansible_os_family == "Debian"
+  notify: restart apache
+
+- name: Enable new Site
+  command: a2ensite contrast-eop-demo
+  become: True
+  when: ansible_os_family == "Debian"
+  notify: restart apache
+
+- name: Set check_port and check_scheme
+  set_fact:
+    check_port: 443
+    check_scheme: https
+
+- name: Check the service
+  include: check_service.yml

@@ -1,0 +1,55 @@
+# - name: Assert that OS is Debian.  Not finished with CentOS.
+#   assert:
+#     that:
+#       - ansible_os_family == "Debian"
+#     msg: "CentOS work for nginx reverse proxy still in progress."
+
+- name: Install nginx
+  apt: name={{ item }} update_cache=yes state=present cache_valid_time=600
+  with_items:
+    - nginx
+  when: ansible_os_family == "Debian"
+
+- name: Install nginx repo (RedHat)
+  yum_repository:
+    name: nginx-official
+    description: Official NGINX Yum Repo
+    baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+    gpgcheck: no
+    enabled: yes
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install nginx (RedHat)
+  yum: name=nginx state=present
+  when: ansible_os_family == "RedHat"
+
+- name: Copy nginx SSL Server Template (Debian)
+  template: src=contrast-nginx-demo.j2 dest=/etc/nginx/sites-available/contrast-nginx-demo
+  when: ansible_os_family == "Debian"
+  notify: restart nginx
+
+- name: Copy nginx SSL Server Template (RedHat)
+  template: src=contrast-nginx-demo.j2 dest=/etc/nginx/conf.d/contrast-nginx-demo.conf
+  when: ansible_os_family == "RedHat"
+  notify: restart nginx
+
+- name: Allow httpd_can_network_connect between Apache on Tomcat for SELinux
+  command: setsebool -P httpd_can_network_connect 1
+  become: True
+  when: ansible_os_family == "RedHat"
+
+- name: Enable contrast-nginx-demo server
+  file:
+    src: /etc/nginx/sites-available/contrast-nginx-demo
+    dest: /etc/nginx/sites-enabled/contrast-nginx-demo
+    state: link
+  when: ansible_os_family == "Debian"
+
+- name: Set check_port and check_scheme
+  set_fact:
+    check_port: 443
+    check_scheme: https
+
+- name: Check the service
+  include: check_service.yml
