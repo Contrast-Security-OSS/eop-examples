@@ -1,10 +1,10 @@
 contrast_license: ~/Downloads/contrast-12-31-2017.lic
 contrast_installer_local: "~/Downloads/Contrast-3.4.0.517.sh"
 contrast_installer_s3: False
-eop_version: 3.4.0
+eop_version: 3.4.4
 run_install: True
 webgoat: False
 apache_reverse: False
-nginx_reverse: True
-do_ssl: True
+nginx_reverse: False
+do_ssl: False
 ssl_dir: /opt/ssl
