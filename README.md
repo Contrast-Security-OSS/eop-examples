@@ -16,6 +16,15 @@ This project expects an installer and license that have been downloaded from [Co
 
 Optionally, this can download an installer artifact from S3.
 
+### Special Instruction for eop-ubuntu1604
+
+The default ubuntu/xenial64 box ships with a hard disk too small to install the software.  
+
+The Vagrantfile that is included with this project depends on the [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) plugin to resize the disk to a larger size.
+
+```
+$ vagrant plugin install vagrant-disksize
+```
 
 ## Variables
 
