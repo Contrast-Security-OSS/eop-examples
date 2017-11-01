@@ -20,6 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     config.vm.define "eop-ubuntu1604" do |vagrant2|
         vagrant2.vm.box = "ubuntu/xenial64"
+        vagrant2.disksize.size = '40GB'
         vagrant2.vm.hostname = "eop-ubuntu1604.local"
         vagrant2.vm.network "forwarded_port", guest: 8080, host: 8280
         vagrant2.vm.network "forwarded_port", guest: 443, host: 8243
