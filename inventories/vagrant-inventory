@@ -1,6 +1,11 @@
 [eop]
 eop-ubuntu1404    		    ansible_ssh_host=10.1.1.11
 eop-ubuntu1604    		    ansible_ssh_host=10.1.1.21 ansible_python_interpreter=/usr/bin/python3
-eop-centos7               ansible_ssh_host=10.1.1.31
-eop-centos6               ansible_ssh_host=10.1.1.41
-eop-webgoat-standalone    ansible_ssh_host=10.1.1.51
+eop-centos7a                ansible_ssh_host=10.1.1.31
+eop-centos7b                ansible_ssh_host=10.1.1.41
+eop-centos6                 ansible_ssh_host=10.1.1.51
+eop-webgoat-standalone      ansible_ssh_host=10.1.1.61
+
+[jumobox]
+eop-jump                    ansible_ssh_host=10.1.1.71
+

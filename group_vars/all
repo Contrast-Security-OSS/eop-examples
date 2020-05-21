@@ -1,7 +1,7 @@
-contrast_license: ~/Downloads/contrast-12-31-2017.lic
-contrast_installer_local: "~/Downloads/Contrast-3.4.4.552.sh"
+contrast_license: ~/Downloads/contrast-05-31-2030.lic
+contrast_installer_local: "~/Downloads/Contrast-3.7.3.949.sh"
 contrast_installer_s3: False
-eop_version: 3.4.4
+eop_version: 3.7.3
 run_install: True
 webgoat: False
 apache_reverse: False
