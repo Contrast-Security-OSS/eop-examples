@@ -1,0 +1,44 @@
+---
+
+- name: install epel-release packages
+  become: True
+  yum: 
+    name: epel-release 
+
+- name: install ansible packages
+  become: True
+  yum: 
+    name: ansible 
+
+# Setup of Environment
+## Setup Inventory for nodes
+## Share SSH Public Keys to nodes
+## Check Private key into ansible vault (or other)
+## Test connections by touching a file
+- name: Deploy SSH Keys
+
+- name: Test SSH Connection by touching a file on each node in $HOME
+
+# Upgrade TS Software
+## Integrate new artifact location
+## Move artifact(s) from origin to destination (ts nodes)
+## Rolling restart of nodes (notify / handlers)
+## Confirm node startup (curl to node?)
+## Confirm nodes in service (curl to load balancer?)
+- name: Move artifact from 
+
+- name: Rolling restart of inventory
+
+- name: Confirm startup
+
+- name: Confirm load balancer in service
+
+
+# Manage TeamServer Properties
+## Start with general.properties, then build
+## Need to pause and understand corporate best practices (ansible tower? control node?  user laptops?)
+## Confirm node startup (curl to node?)
+## Confirm nodes in service (curl to load balancer?)
+## Integrate encrypted files after all plaintext (protip: use *.cleartext trick)
+- name: Update general.properties Files on TS Nodes
+

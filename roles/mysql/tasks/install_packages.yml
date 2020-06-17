@@ -1,0 +1,28 @@
+- name: Add MySQL deb repo
+  become: True
+  apt_repository: 
+    repo: 'deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7' 
+    state: present
+
+- name: Accept gpg key
+  become: True
+  # apt_key: id=5072E1F5 keyserver=hkp://keys.gnupg.net:80 state=present
+  apt_key: 
+    data: "{{ lookup('file', 'mysql_pubkey.asc') }}" 
+    state: present
+
+- name: apt-get update
+  become: True
+  apt: 
+    update_cache: yes
+
+- name: install mysql packages
+  become: True
+  apt: 
+    pkg: "{{ item }}" 
+    state: latest 
+    force: yes
+  with_items:
+    - mysql-server
+    - mysql-client
+    - python-mysqldb

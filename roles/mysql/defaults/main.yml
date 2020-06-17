@@ -1,0 +1,33 @@
+---
+# defaults file for ansible-role-mysql
+# everything in this file should be replaced in a project playbook.
+# references here are for communication and example only
+mysql:
+  default_root_user: 'root'
+  default_root_password: ''
+  my_root_user: 'toor'
+  my_root_password: 'drowssap'
+  databases:
+     - contrast
+  users:
+    contrast:
+      password: default1pass
+      priv: contrast.*:ALL
+      host: '%'
+      state: present
+  settings:
+    mysqld:
+        user: mysql
+        pid-file: /var/run/mysqld/mysqld.pid
+        socket: /var/run/mysqld/mysqld.sock
+        port: 3306
+        basedir: "/usr"
+        datadir: "/var/lib/mysql"
+        tmpdir: "/tmp"
+        slow_query_log: "1"
+        slow_query_log_file: "/var/log/mysql/mysql-slow.log"
+        long_query_time: "1"
+        bind-address: "*"
+    innodb:
+        innodb_buffer_pool_size: 64M
+        innodb_file_per_table: 1

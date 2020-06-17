@@ -1,0 +1,8 @@
+---
+- name: Remove default root user
+  mysql_user: >
+    login_user={{ mysql.my_root_user }}
+    login_password={{ mysql.my_root_password }}
+    name={{ mysql.default_root_user }}
+    state=absent
+  when: "'{{ mysql.my_root_user }}' != '{{ mysql.default_root_user }}'"

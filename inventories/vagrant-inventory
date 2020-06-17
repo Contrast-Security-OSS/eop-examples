@@ -6,6 +6,10 @@ eop-centos7b                ansible_ssh_host=10.1.1.41
 eop-centos6                 ansible_ssh_host=10.1.1.51
 eop-webgoat-standalone      ansible_ssh_host=10.1.1.61
 
-[jumobox]
+[db]
+eop-db                      ansible_ssh_host=10.1.1.81
+
+
+[jumpbox]
 eop-jump                    ansible_ssh_host=10.1.1.71
 

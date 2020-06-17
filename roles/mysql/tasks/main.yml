@@ -1,0 +1,7 @@
+---
+# tasks file for ansible-role-mysql
+- include: install_packages.yml
+- include: install_configuration.yml
+- include: setup_grants.yml
+- include: create_databases.yml
+- include: cleanup.yml

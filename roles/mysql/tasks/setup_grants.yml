@@ -1,0 +1,22 @@
+- name: Set Root Password for localhost (this will fail if not fresh install)
+  mysql_user:
+    login_user: "{{ mysql.default_root_user }}"
+    login_password: "{{ mysql.default_root_password }}"
+    name: "{{ mysql.my_root_user }}"
+    password: "{{ mysql.my_root_password }}"
+    priv: "*.*:ALL,GRANT"
+    host: "{{ item }}"
+  with_items:
+    - localhost
+  ignore_errors: true
+
+- name: Create database users
+  mysql_user:
+    login_user: "{{ mysql.my_root_user }}"
+    login_password: "{{ mysql.my_root_password }}"
+    name: "{{ item.key }}"
+    host: "{{ item.value.host | default('localhost') }}"
+    password: "{{ item.value.password }}"
+    priv: "{{ item.value.priv }}"
+    state: present
+  with_dict: "{{ mysql.users | default({})}}"

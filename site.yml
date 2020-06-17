@@ -7,3 +7,13 @@
 
 
 - hosts: jumpbox
+  become: True
+  gather_facts: True
+  roles:
+    - jumpbox    
+
+- hosts: db
+  become: True
+  gather_facts: True
+  roles:
+    - mysql 

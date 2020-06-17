@@ -91,4 +91,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             }
         end
     end
+    config.vm.define "eop-db" do |vagrant8|
+        vagrant8.vm.box = "ubuntu/trusty64"
+        vagrant8.vm.hostname = "eop-db.local"
+        vagrant8.vm.network "private_network", ip: "10.1.1.81"
+        vagrant8.vm.provision "ansible" do |ansible8|
+             ansible8.verbose = 'v'
+             ansible8.playbook = "site.yml"
+             ansible8.inventory_path = 'inventories/vagrant-inventory'
+             ansible8.extra_vars = {
+                run_install: "False"
+            }
+        end
+    end
 end
