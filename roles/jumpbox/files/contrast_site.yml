@@ -2,14 +2,10 @@
 - hosts: ts
   become: True
   gather_facts: True
-  tasks:
-    - name: Touch a file in home directory
+  tasks: 
+    - name: Touch a file
       file:
         state: touch
-        path: /tmp/ansible-touch 
-
-# - hosts: ts
-#   become: True
-#   gather_facts: True
-#   roles:
-#     - ansible-role-teamserver 
+        path: /tmp/ansible-touch
+  roles:
+    - ansible-role-teamserver 
