@@ -17,18 +17,7 @@
 # Setup of Environment
 ## Setup Inventory for nodes
 ## Share SSH Public Keys to nodes
-## Check Private key into ansible vault (or other)
-## Test connections by touching a file
-#- name: Deploy SSH Keys
-
-#- name: Test SSH Connection by touching a file on each node in $HOME
-
-# Manage TeamServer Properties
-## Start with general.properties, then build
-## Need to pause and understand corporate best practices (ansible tower? control node?  user laptops?)
-## Confirm node startup (curl to node?)
-## Confirm nodes in service (curl to load balancer?)
-## Integrate encrypted files after all plaintext (protip: use *.cleartext trick)
+## handled in the eop role (public key) and jumpbox role (private key)
 
 - name: Create wheel
   group:
@@ -52,15 +41,14 @@
 - name: Set folder permissions
   file:
     path: "{{ control_node_user.home }}/.ssh"
-    mode: 0700
+    mode: "0700"
 
 - name: Copy Private SSH Key
   copy:
     src: "{{ item }}"
     dest: "{{ control_node_user.home }}/.ssh/"
     owner: "{{ control_node_user.name }}"
-    group: "{{ control_node_user.name }}"
-    mode: 0600
+    mode: "0600"
   loop: 
     - "{{ contrast_private_ssh_key }}"
     - "{{ contrast_public_ssh_key }}"
@@ -70,7 +58,6 @@
     src: "{{ item }}"
     dest: "{{ control_node_user.home }}/"
     owner: "{{ control_node_user.name }}"
-    group: "{{ control_node_user.name }}"
   loop:
     - "inventory"
     - "contrast_site.yml"
