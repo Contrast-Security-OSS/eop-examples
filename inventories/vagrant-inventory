@@ -13,3 +13,4 @@ eop-db                      ansible_ssh_host=10.1.1.81
 [jumpbox]
 eop-jump                    ansible_ssh_host=10.1.1.71
 
+

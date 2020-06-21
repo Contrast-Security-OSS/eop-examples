@@ -6,8 +6,11 @@
       - not (apache_reverse and nginx_reverse)
     msg: "Both apache_reverse and nginx_reverse cannot be True"
 
+- include: deploy_ssh_user.yml
+  when: deploy_ssh_user == True
+
 - include: eop_installer.yml
-  when: eop_version is defined and run_installation is True
+  when: eop_version is defined and run_install == True
 
 - include: generate_ssl_certs.yml
   when: do_ssl

@@ -6,10 +6,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           vb.cpus = "2"
     end
 
-    config.vm.define "eop-ubuntu1404" do |vagrant1|
-        vagrant1.vm.box = "ubuntu/trusty64"
-        vagrant1.vm.hostname = "eop-ubuntu1404.local"
-        vagrant1.vm.network "forwarded_port", guest: 8080, host: 8180
+    config.vm.define "eop-ubuntu1804" do |vagrant1|
+        vagrant1.vm.box = "ubuntu/bionic64"
+        vagrant1.vm.hostname = "eop-ubuntu1804.local"
+        vagrant1.vm.network "forwarded_port", guest: 8080, host: 8980
         vagrant1.vm.network "forwarded_port", guest: 443, host: 8143
         vagrant1.vm.network "private_network", ip: "10.1.1.11"
         vagrant1.vm.provision "ansible" do |ansible1|

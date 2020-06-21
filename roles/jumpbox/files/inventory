@@ -1,0 +1,6 @@
+[ts]
+eop-centos7a                ansible_ssh_host=10.1.1.31
+eop-centos7b                ansible_ssh_host=10.1.1.41
+
+[db]
+eop-db                      ansible_ssh_host=10.1.1.81

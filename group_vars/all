@@ -1,10 +1,14 @@
 contrast_license: ~/Downloads/contrast-05-31-2030.lic
-contrast_installer_local: "~/Downloads/Contrast-3.7.3.949.sh"
+contrast_installer_local: "~/Downloads/Contrast-3.7.4.984.sh"
 contrast_installer_s3: False
-eop_version: 3.7.3
+eop_version: 3.7.4
 run_install: True
 webgoat: False
 apache_reverse: False
 nginx_reverse: False
 do_ssl: False
 ssl_dir: /opt/ssl
+
+contrast_private_ssh_key: ~/Desktop/teamserver-safe/id_rsa
+contrast_public_ssh_key: ~/Desktop/teamserver-safe/id_rsa.pub
+deploy_ssh_user: True

@@ -29,13 +29,48 @@
 ## Confirm node startup (curl to node?)
 ## Confirm nodes in service (curl to load balancer?)
 ## Integrate encrypted files after all plaintext (protip: use *.cleartext trick)
+
+- name: Create wheel
+  group:
+    name: wheel
+
+- name: Create user
+  user:
+    name: contrast_ssh_user
+    group: wheel
+    append: yes
+  register: control_node_user
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: Copy Private SSH Key
+  copy:
+    src: "{{ item }}"
+    dest: "{{ control_node_user.home }}/.ssh/"
+  loop: 
+    - "{{ contrast_private_ssh_key }}"
+    - "{{ contrast_public_ssh_key }}"
+
+- name: Copy site.yml template
+  copy:
+    src: "{{ item }}"
+    dest: "{{ control_node_user.home }}/"
+  loop:
+    - "inventory"
+    - "contrast_site.yml"
+
 - name: Clone ansible-role-teamserver
   git:
     repo: 'https://github.com/Contrast-Security-OSS/ansible-role-teamserver.git'
     dest: /etc/ansible/roles/ansible-role-teamserver
     accept_hostkey: yes
-
-#- name: Update general.properties Files on TS Nodes
+    version: "{{ role_version }}"
 
 
 # Upgrade TS Software
