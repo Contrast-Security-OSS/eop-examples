@@ -8,6 +8,8 @@
         name: contrast_ssh_user
         group: wheel
         append: yes
+      when: ansible_os_family == "RedHat"
+ 
 
     - name: Allow 'wheel' group to have passwordless sudo
       lineinfile:
@@ -16,12 +18,14 @@
         regexp: '^%wheel'
         line: '%wheel ALL=(ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
+      when: ansible_os_family == "RedHat"
 
     - name: Copy Public SSH Key
       authorized_key:
         user: contrast_ssh_user
         state: present
         key: "{{ lookup('file', '{{ contrast_public_ssh_key }}' ) }}"
+      when: ansible_os_family == "RedHat"
 
 
 - hosts: eop

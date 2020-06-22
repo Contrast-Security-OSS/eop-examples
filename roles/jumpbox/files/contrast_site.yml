@@ -2,10 +2,14 @@
 - hosts: ts
   become: True
   gather_facts: True
-  tasks: 
-    - name: Touch a file
-      file:
-        state: touch
-        path: /tmp/ansible-touch
   roles:
     - ansible-role-teamserver 
+
+- hosts: ts
+  serial: 1
+  become: True
+  gather_facts: True
+  tasks:
+  - name: Restart
+    command: service contrast-server restart
+  tags: rolling-restart

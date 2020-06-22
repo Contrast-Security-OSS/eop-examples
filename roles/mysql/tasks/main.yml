@@ -1,7 +1,91 @@
 ---
 # tasks file for ansible-role-mysql
-- include: install_packages.yml
-- include: install_configuration.yml
-- include: setup_grants.yml
-- include: create_databases.yml
-- include: cleanup.yml
+
+- name: apt-get update
+  become: True
+  apt: 
+    update_cache: yes
+
+- name: install mysql packages
+  become: True
+  apt: 
+    pkg: [mysql-server, mysql-client, python-pymysql]
+    state: latest 
+    force: yes
+
+#   template: src={{ item.src}} dest={{ item.dest }} owner=root group=root mode=0644
+#   become: yes
+#   with_items:
+#     - src: "etc/mysql/my.cnf"
+#       dest: "/etc/mysql/my.cnf"
+#     - src: "etc/mysql/conf.d/my.cnf"
+#       dest: "/etc/mysql/conf.d/my.cnf"
+#   notify:
+#     - restart mysql-server
+
+# remember to comment out bind_address!!!
+
+- name: Removes anonymous user account for localhost
+  mysql_user:
+    name: ''
+    host: localhost
+    state: absent
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+- name: Removes all anonymous user accounts
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+- name: Create databases
+  mysql_db:  
+    name: "{{ item }}"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  with_items: "{{ mysql.databases }}"
+
+- name: Set Root Password for localhost (this will fail if not fresh install)
+  mysql_user:
+    login_user: "{{ mysql.default_root_user }}"
+    login_password: "{{ mysql.default_root_password }}"
+    name: "{{ mysql.my_root_user }}"
+    password: "{{ mysql.my_root_password }}"
+    priv: "*.*:ALL,GRANT"
+    host: "{{ item }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  with_items:
+    - localhost
+  ignore_errors: true
+
+- name: Ensure MySQL will listen on all ip interfaces (bind to 0.0.0.0)
+  lineinfile: 
+    dest: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+    regexp: 'bind-address\s*=\s*127\.0\.0\.1\s*'
+    line: "bind-address=0.0.0.0"
+    state: present
+    backrefs: yes
+
+- name: Create database users
+  mysql_user:
+    login_user: "{{ mysql.my_root_user }}"
+    login_password: "{{ mysql.my_root_password }}"
+    name: "{{ item.key }}"
+    host: "{{ item.value.host | default('localhost') }}"
+    password: "{{ item.value.password }}"
+    priv: "{{ item.value.priv }}"
+    state: present
+  with_dict: "{{ mysql.users | default({})}}"
+
+
+
+# - name: Remove default root user
+#   mysql_user: 
+#     login_user: "{{ mysql.my_root_user }}"
+#     login_password: "{{ mysql.my_root_password }}"
+#     name: "{{ mysql.default_root_user }}"
+#     state: absent
+#   when: "'{{ mysql.my_root_user }}' != '{{ mysql.default_root_user }}'"

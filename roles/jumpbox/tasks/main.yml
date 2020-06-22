@@ -53,7 +53,19 @@
     - "{{ contrast_private_ssh_key }}"
     - "{{ contrast_public_ssh_key }}"
 
-- name: Copy site.yml template
+# - name: Create group_vars folder
+#   file:
+#     state: directory
+#     dest: "{{ control_node_user.home }}/group_vars"
+#     owner: "{{ control_node_user.name }}"
+
+- name: create group_vars directory
+  file:
+    state: directory
+    dest: "{{ control_node_user.home }}/group_vars/"
+    owner: "{{ control_node_user.name }}"
+
+- name: Copy control-node setup
   copy:
     src: "{{ item }}"
     dest: "{{ control_node_user.home }}/"
@@ -61,6 +73,14 @@
   loop:
     - "inventory"
     - "contrast_site.yml"
+
+- name: Copy control-node setup
+  copy:
+    src: "{{ item }}"
+    dest: "{{ control_node_user.home }}/group_vars/"
+    owner: "{{ control_node_user.name }}"
+  loop:
+    - "group_vars/all"
 
 - name: Clone ansible-role-teamserver
   git:

@@ -1,3 +1,0 @@
-- name: Create databases
-  mysql_db: login_user={{ mysql.my_root_user }} login_password={{ mysql.my_root_password }} name={{ item }} state=present
-  with_items: "{{ mysql.databases }}"

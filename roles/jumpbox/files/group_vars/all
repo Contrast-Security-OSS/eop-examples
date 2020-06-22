@@ -1,0 +1,6 @@
+teamserver_jdbc_pass: default1pass
+teamserver_jdbc_user: contrast
+teamserver_jdbc_url: jdbc:mysql://10.1.1.81:3306/contrast
+teamserver_jdbc_host: 10.1.1.81
+teamserver_jdbc_database_type: distributed
+
